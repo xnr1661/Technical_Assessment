@@ -1,18 +1,17 @@
-﻿Rover rover = new Rover(0, 0, 'N');
+﻿using Technical_Assessment.Domain.Entities;
+using Technical_Assessment.Domain.Enums;
+
+RoverService rover = new RoverService(0, 0, Direction.North);
 rover.Move("LMLMLMLMM");
 rover.PrintPosition();
 
-public class Rover
+public class RoverService
 {
-    public int X { get; set; }
-    public int Y { get; set; }
-    public char Direction { get; set; }
+    Rover rover;
 
-    public Rover(int x, int y, char direction)
+    public RoverService(int x, int y, Direction direction)
     {
-        X = x;
-        Y = y;
-        Direction = direction;
+        rover = new Rover(x, y, direction);
     }
 
     public void Move(string commands)
@@ -36,30 +35,32 @@ public class Rover
 
     private void TurnLeft()
     {
-        if (Direction == 'N') Direction = 'W';
-        else if (Direction == 'W') Direction = 'S';
-        else if (Direction == 'S') Direction = 'E';
-        else if (Direction == 'E') Direction = 'N';
+        if (rover.GetDirection() == Direction.North) rover.SetDirection(Direction.West);
+        else if (rover.GetDirection() == Direction.West) rover.SetDirection(Direction.South);
+        else if (rover.GetDirection() == Direction.South) rover.SetDirection(Direction.East);
+        else if (rover.GetDirection() == Direction.East) rover.SetDirection(Direction.North);
     }
 
     private void TurnRight()
     {
-        if (Direction == 'N') Direction = 'E';
-        else if (Direction == 'E') Direction = 'S';
-        else if (Direction == 'S') Direction = 'W';
-        else if (Direction == 'W') Direction = 'N';
+        if (rover.GetDirection() == Direction.North) rover.SetDirection(Direction.East);
+        else if (rover.GetDirection() == Direction.West) rover.SetDirection(Direction.North);
+        else if (rover.GetDirection() == Direction.South) rover.SetDirection(Direction.West);
+        else if (rover.GetDirection() == Direction.East) rover.SetDirection(Direction.South);
     }
 
     private void MoveForward()
     {
-        if (Direction == 'N') Y += 1;
-        else if (Direction == 'E') X += 1;
-        else if (Direction == 'S') Y -= 1;
-        else if (Direction == 'W') X -= 1;
+        var currentPosition = rover.GetPosition();
+
+        if (rover.GetDirection() == Direction.North) rover.SetPosition(currentPosition.X + 1, currentPosition.Y);
+        else if (rover.GetDirection() == Direction.West) rover.SetPosition(currentPosition.X, currentPosition.Y - 1);
+        else if (rover.GetDirection() == Direction.South) rover.SetPosition(currentPosition.X - 1, currentPosition.Y);
+        else if (rover.GetDirection() == Direction.East) rover.SetPosition(currentPosition.X, currentPosition.Y + 1);
     }
 
     public void PrintPosition()
     {
-        Console.WriteLine($"Rover Position: {X}, {Y}, {Direction}");
+        Console.WriteLine(rover.ToString());
     }
 }
