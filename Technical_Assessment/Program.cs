@@ -20,7 +20,7 @@ using (var scope = serviceProvider.CreateScope())
 
     var rover = new Rover(0, 0, Direction.North);
 
-    roverService.ExecuteCommands(rover, "LFFLBRRFRF");
+    roverService.ExecuteCommands(rover, "RBFXFFFLFFOOOFRGGGBR1");
 
     Console.WriteLine(rover.ToString());
 }
